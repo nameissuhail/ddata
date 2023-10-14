@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
 
-function App() {
+const UsersTable = () => {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://dummyjson.com/users")
+      .then((response) => response.json())
+      .then((data) => setUsers(data.users));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <table className="table">
+      <thead>
+        <tr>
+          <th>S.No.</th>
+          <th>Profile Pic</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Gender</th>
+          <th>IP</th>
+          <th>Gmail Domain</th>
+          <th>University</th>
+        </tr>
+      </thead>
+      <tbody>
+        {users.map((user, index) => (
+          <tr key={user.id}>
+            <td>{index + 1}</td>
+            <td><img src={user.image} alt="Profile Pic" /></td>
+            <td>{user.firstName}</td>
+            <td>{user.lastName}</td>
+            <td>{user.gender}</td>
+            <td>{user.ip}</td>
+            <td>{user.email.split("@")[1]}</td>
+            <td>{user.university}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
-}
+};
 
-export default App;
+export default UsersTable;
